@@ -1,4 +1,8 @@
-import Vue from 'vue'
-import { Button } from 'element-ui'
+import Vue from "vue";
 
-Vue.use(Button)
+import ElementUi from "element-ui";
+import { Message } from "element-ui";
+
+Vue.use(ElementUi);
+
+Vue.prototype.$message = Message;
