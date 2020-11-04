@@ -1,16 +1,25 @@
 <template>
-  <div>
-    <h1>Home</h1>
-    <div>
-      <el-button type="info" @click="logOut">退出登录</el-button>
-    </div>
-  </div>
+  <el-container class="home-container">
+    <!-- 头部区域 -->
+    <el-header
+      >Header<el-button type="info" @click="logout">
+        退出
+      </el-button></el-header
+    >
+    <!-- 页面主体区域 -->
+    <el-container>
+      <!-- 侧边栏 -->
+      <el-aside width="200px">Aside</el-aside>
+      <!-- 主体结构 -->
+      <el-main>Main</el-main>
+    </el-container>
+  </el-container>
 </template>
 
 <script>
 export default {
   methods: {
-    logOut() {
+    logout() {
       window.sessionStorage.clear();
       this.$router.push("/login");
     },
@@ -19,4 +28,48 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.home-container {
+  height: 100%;
+}
+.el-header {
+  background-color: #373d41;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 0;
+  align-items: center;
+  color: #fff;
+  font-size: 20px;
+  > div {
+    display: flex;
+    align-items: center;
+    span {
+      margin-left: 15px;
+    }
+  }
+}
+
+.el-aside {
+  background-color: #333744;
+  .el-menu {
+    border-right: none;
+  }
+}
+
+.el-main {
+  background-color: #eaedf1;
+}
+
+.iconfont {
+  margin-right: 10px;
+}
+
+.toggle-button {
+  background-color: #4a5064;
+  font-size: 10px;
+  line-height: 24px;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+}
 </style>
