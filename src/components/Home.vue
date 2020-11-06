@@ -68,11 +68,6 @@ export default {
   > div {
     display: flex;
     align-items: center;
-    img {
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-    }
     span {
       margin-left: 15px;
     }
