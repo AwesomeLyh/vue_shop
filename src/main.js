@@ -13,6 +13,9 @@ import "./assets/fonts/iconfont.css";
 //引入axios
 import axios from "axios";
 
+//引入树形表格插件
+import TreeTable from "vue-table-with-tree-grid";
+
 axios.defaults.baseURL = "http://localhost:8888/api/private/v1/";
 
 //请求拦截器,给请求头带上Authorization
@@ -23,6 +26,9 @@ axios.interceptors.request.use(config => {
 
 //给Vue的原型对象添加一个属性
 Vue.prototype.$http = axios;
+
+//注册组件
+Vue.component("tree-table", TreeTable);
 
 Vue.config.productionTip = false;
 

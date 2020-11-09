@@ -12,6 +12,14 @@ body,
   font-size: 12px;
 }
 
+/* 组件内无法修改此子组件的非根元素样式，放在全局样式 */
+.el-cascader {
+  width: 100%;
+}
+.el-cascader-menu {
+  height: 300px;
+}
+
 .el-card {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
 }
