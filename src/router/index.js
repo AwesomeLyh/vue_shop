@@ -6,6 +6,8 @@ import Welcome from "../components/Welcome.vue";
 import Users from "../components/user/Users.vue";
 import Roles from "../components/power/Roles.vue";
 import CateGories from "../components/goods/CateGories.vue";
+import Params from "../components/goods/Params.vue";
+import Goods from "../components/goods/GoodsList.vue";
 
 Vue.use(Router);
 
@@ -24,7 +26,9 @@ const router = new Router({
         { path: "/welcome", component: Welcome },
         { path: "/users", component: Users },
         { path: "/roles", component: Roles },
-        { path: "/categories", component: CateGories }
+        { path: "/categories", component: CateGories },
+        { path: "/params", component: Params },
+        { path: "/goods", component: Goods }
       ]
     }
   ]
