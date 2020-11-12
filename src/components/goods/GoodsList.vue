@@ -8,12 +8,14 @@
     </el-breadcrumb>
     <!-- 卡片区域 -->
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <span>卡片名称</span>
-        <el-button style="float: right; padding: 3px 0" type="text"
-          >操作按钮
+        <el-input placeholder="请输入内容" v-model="input2" width="20">
+          <template slot="append">
+            <i class="el-icon-help"></i>
+          </template>
+        </el-input>
+        <el-button type="primary" slot-scope="">
+          操作按钮
         </el-button>
-      </div>
     </el-card>
   </div>
 </template>

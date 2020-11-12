@@ -88,6 +88,7 @@
               <template slot-scope="scope">
                 <!-- 循环渲染Tag标签 -->
                 <el-tag
+                  style="margin-right: 10px;"
                   v-for="(item, i) in scope.row.attr_vals"
                   :key="i"
                   closable
@@ -96,6 +97,7 @@
                 </el-tag>
                 <!-- 输入的文本框 -->
                 <el-input
+                  style="width:10%"
                   class="input-new-tag"
                   v-if="scope.row.inputVisible"
                   v-model="scope.row.inputValue"
@@ -111,8 +113,9 @@
                   class="button-new-tag"
                   size="small"
                   @click="showInput(scope.row)"
-                  >+ New Tag</el-button
                 >
+                  + New Tag
+                </el-button>
               </template>
             </el-table-column>
             <!-- 索引列 -->
@@ -261,8 +264,58 @@ export default {
     }
   },
   methods: {
+    //发送更新请求
+    async updateData(row) {
+      //发送请求
+      const { data: res } = await this.$http.put(
+        `categories/${this.getCateId}/attributes/${row.attr_id}`,
+        {
+          attr_name: row.attr_name,
+          attr_sel: row.attr_sel,
+          attr_vals: row.attr_vals.join(" ")
+        }
+      );
+      if (res.meta.status !== 200) {
+        return this.$message.error("修改参数项失败！");
+      }
+      this.$message.success("修改参数项成功");
+    },
+
+    //处理tag输入框提交w
+    async handleInputConfirm(row) {
+      console.log(typeof row.inputValue);
+
+      //处理是否输入内容
+      if (row.inputValue.trim().length == 0) {
+        row.inputVisible = false;
+        row.inputValue = "";
+        return;
+      }
+
+      //获取数据
+      var newItem = row.inputValue.trim();
+      row.attr_vals.push(newItem);
+      row.inputValue = "";
+      row.inputVisible = false;
+      
+      this.updateData(row);
+    },
+
+    //tag文本输入框展示
+    showInput(role) {
+      role.inputVisible = true;
+      // 让文本框自动获得焦点
+      // $nextTick 方法的作用，就是当页面上元素被重新渲染之后，才会指定回调函数中的代码
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus();
+      });
+    },
+
     // 处理关闭函数
-    handleClose(id, role) {},
+    handleClose(id, row) {
+      row.attr_vals.splice(id, 1);
+      this.updateData(row);
+    },
 
     //显示编辑dialog并且获取数据
     async showEditDialog(id) {
@@ -381,6 +434,14 @@ export default {
       if (res.meta.status !== 200)
         return this.$message.error("获取参数列表失败");
       this.$message.success("获取参数分类成功");
+      res.data.forEach(item => {
+        item.attr_vals = item.attr_vals ? item.attr_vals.split(" ") : [];
+        // 控制文本框显示
+        item.inputVisible = false;
+        //文本框内容
+        item.inputValue = "";
+      });
+
       if (this.activeName === "only") {
         this.onlyTableData = res.data;
       } else {
