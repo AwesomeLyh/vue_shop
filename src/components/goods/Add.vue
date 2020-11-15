@@ -136,203 +136,200 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      //预览图片地址
-      previewPath: "",
+      // 预览图片地址
+      previewPath: '',
 
-      //控制预览显示
+      // 控制预览显示
       previewVisible: false,
 
-      //上传图片的请求头
+      // 上传图片的请求头
       headerObj: {
-        Authorization: window.sessionStorage.getItem("token")
+        Authorization: window.sessionStorage.getItem('token')
       },
-      //商品分类列表
+      // 商品分类列表
       cateList: [],
 
       // 动态属性列表数据
       manyTableData: [],
 
-      //静态属性列表数据
+      // 静态属性列表数据
       onlyTableData: [],
 
-      //上传的文件
+      // 上传的文件
       fileList: [],
 
-      //下拉菜单配置的实例
+      // 下拉菜单配置的实例
       cateProps: {
-        value: "cat_id",
-        label: "cat_name",
-        children: "children",
-        expandTrigger: "hover",
+        value: 'cat_id',
+        label: 'cat_name',
+        children: 'children',
+        expandTrigger: 'hover',
         checkStrictly: true
       },
       // 添加商品的表单数据
       addForm: {
-        goods_name: "",
+        goods_name: '',
         goods_price: 0,
         goods_weight: 0,
         goods_number: 0,
-        //选中的三级分类id
+        // 选中的三级分类id
         goods_cat: [],
-        //上传的图片列表
+        // 上传的图片列表
         pics: [],
-        //商品介绍
-        goods_introduce: "",
-        //商品分类参数
+        // 商品介绍
+        goods_introduce: '',
+        // 商品分类参数
         attrs: []
       },
 
       // 添加商品的表单数据校验
       addFormRules: {
         goods_name: [
-          { required: true, message: "输入商品名称", trigger: "blur" }
+          { required: true, message: '输入商品名称', trigger: 'blur' }
         ],
         goods_price: [
-          { required: true, message: "输入商品价格", trigger: "blur" }
+          { required: true, message: '输入商品价格', trigger: 'blur' }
         ],
         goods_weight: [
-          { required: true, message: "输入商品重量", trigger: "blur" }
+          { required: true, message: '输入商品重量', trigger: 'blur' }
         ],
         goods_number: [
-          { required: true, message: "输入商品数量", trigger: "blur" }
+          { required: true, message: '输入商品数量', trigger: 'blur' }
         ]
       },
 
-      //当前激活的步骤编号
+      // 当前激活的步骤编号
       activeIndex: 0
-    };
-  },
-  computed: {
-    //获取当前选中的三级分类的id
-    getCateId() {
-      console.log(this.addForm.goods_cat[2]);
-      if (this.addForm.goods_cat.length === 3) return this.addForm.goods_cat[2];
-      return null;
     }
   },
-  created() {
-    this.getCateList();
+  computed: {
+    // 获取当前选中的三级分类的id
+    getCateId () {
+      console.log(this.addForm.goods_cat[2])
+      if (this.addForm.goods_cat.length === 3) return this.addForm.goods_cat[2]
+      return null
+    }
+  },
+  created () {
+    this.getCateList()
   },
   methods: {
-    //提交新增商品
-    addGoods() {
+    // 提交新增商品
+    addGoods () {
       this.$refs.addFormRef.validate(async valid => {
-        if (!valid) return this.$message.error("请填写必要内容");
-        //接口参数需要字符串 --转换数组
-        this.addForm.goods_cat = this.addForm.goods_cat.join(",");
+        if (!valid) return this.$message.error('请填写必要内容')
+        // 接口参数需要字符串 --转换数组
+        this.addForm.goods_cat = this.addForm.goods_cat.join(',')
 
-        //处理动态参数
+        // 处理动态参数
         this.manyTableData.forEach(item => {
           const newinfo = {
             attr_id: item.attr_id,
-            attr_value: item.attr_vals.join(",")
-          };
-          this.addForm.attrs.push(newinfo);
-        });
+            attr_value: item.attr_vals.join(',')
+          }
+          this.addForm.attrs.push(newinfo)
+        })
 
-        //处理静态参数
+        // 处理静态参数
         this.onlyTableData.forEach(item => {
           const newinfo = {
             attr_id: item.attr_id,
             attr_value: item.attr_vals
-          };
-          this.addForm.attrs.push(newinfo);
-        });
-        console.log(this.addForm);
-        const { data: res } = await this.$http.post("goods", this.addForm);
-        if (res.meta.status !== 201) return this.$message.error("添加商品失败");
-        this.$message.success("添加商品成功");
-        this.$router.push("/goods");
-      });
+          }
+          this.addForm.attrs.push(newinfo)
+        })
+        console.log(this.addForm)
+        const { data: res } = await this.$http.post('goods', this.addForm)
+        if (res.meta.status !== 201) return this.$message.error('添加商品失败')
+        this.$message.success('添加商品成功')
+        this.$router.push('/goods')
+      })
     },
 
-    //上传的图片预览
-    handlePreview(file) {
-      console.log(file);
-      this.previewPath = file.response.data.url;
-      this.previewVisible = true;
+    // 上传的图片预览
+    handlePreview (file) {
+      console.log(file)
+      this.previewPath = file.response.data.url
+      this.previewVisible = true
     },
 
-    //移除上传的图片
-    handleRemove(file) {
-      //获取临时路径
-      const filePath = file.response.data.tmp_path;
-      //从数组获取下标
-      const i = this.addForm.pics.findIndex(item => item.pic == filePath);
-      //删除对应项
-      this.addForm.pics.splice(i, 1);
+    // 移除上传的图片
+    handleRemove (file) {
+      // 获取临时路径
+      const filePath = file.response.data.tmp_path
+      // 从数组获取下标
+      const i = this.addForm.pics.findIndex(item => item.pic === filePath)
+      // 删除对应项
+      this.addForm.pics.splice(i, 1)
     },
 
-    //上传成功
-    handleSuccess(res) {
-      //获取相应的图品地址
-      const picinfo = { pic: res.data.tmp_path };
-      //添加到addForm中
-      this.addForm.pics.push(picinfo);
+    // 上传成功
+    handleSuccess (res) {
+      // 获取相应的图品地址
+      const picinfo = { pic: res.data.tmp_path }
+      // 添加到addForm中
+      this.addForm.pics.push(picinfo)
     },
 
-    //点击切换Tab时的事件处理
-    async tabCilckHandler() {
-      if (this.activeIndex === "1") {
+    // 点击切换Tab时的事件处理
+    async tabCilckHandler () {
+      if (this.activeIndex === '1') {
         const { data: res } = await this.$http.get(
           `categories/${this.getCateId}/attributes`,
           {
-            params: { sel: "many" }
+            params: { sel: 'many' }
           }
-        );
-        if (res.meta.status !== 200)
-          return this.$message.error("获取分类参数失败");
-        this.$message.success("获取参数成功");
-        this.manyTableData = res.data;
-        console.log(res.data);
+        )
+        if (res.meta.status !== 200) { return this.$message.error('获取分类参数失败') }
+        this.$message.success('获取参数成功')
+        this.manyTableData = res.data
+        console.log(res.data)
         res.data.forEach(item => {
           item.attr_vals =
-            item.attr_vals.length === 0 ? [] : item.attr_vals.split(" ");
-        });
-      } else if (this.activeIndex === "2") {
+            item.attr_vals.length === 0 ? [] : item.attr_vals.split(' ')
+        })
+      } else if (this.activeIndex === '2') {
         const { data: res } = await this.$http.get(
           `categories/${this.getCateId}/attributes`,
           {
-            params: { sel: "only" }
+            params: { sel: 'only' }
           }
-        );
-        if (res.meta.status !== 200)
-          return this.$message.error("获取分类参数失败");
-        this.$message.success("获取参数成功");
-        this.onlyTableData = res.data;
-        console.log(res.data);
+        )
+        if (res.meta.status !== 200) { return this.$message.error('获取分类参数失败') }
+        this.$message.success('获取参数成功')
+        this.onlyTableData = res.data
+        console.log(res.data)
       }
     },
     //   处理下拉菜单事件
-    handleChange() {
-      //判断是否选中三级分类 若不是则清空选择栏
+    handleChange () {
+      // 判断是否选中三级分类 若不是则清空选择栏
       if (this.addForm.goods_cat.length !== 3) {
-        this.addForm.goods_cat = [];
-        return this.$message.error("所选分类不是三级分类");
+        this.addForm.goods_cat = []
+        return this.$message.error('所选分类不是三级分类')
       }
     },
 
-    //切换tab栏之前的操作
-    beforeLeaveHandler(activeName, oldActiveName) {
-      if (oldActiveName === "0" && this.addForm.goods_cat.length !== 3) {
-        this.addForm.goods_cat = [];
-        this.$message.error("未选择商品分类");
-        return false;
+    // 切换tab栏之前的操作
+    beforeLeaveHandler (activeName, oldActiveName) {
+      if (oldActiveName === '0' && this.addForm.goods_cat.length !== 3) {
+        this.addForm.goods_cat = []
+        this.$message.error('未选择商品分类')
+        return false
       }
     },
 
-    //获取商品分类
-    async getCateList() {
-      const { data: res } = await this.$http.get("categories");
-      if (res.meta.status !== 200)
-        return this.$message.error("获取商品分类失败");
-      this.$message.success("获取商品分类成功");
-      this.cateList = res.data;
+    // 获取商品分类
+    async getCateList () {
+      const { data: res } = await this.$http.get('categories')
+      if (res.meta.status !== 200) { return this.$message.error('获取商品分类失败') }
+      this.$message.success('获取商品分类成功')
+      this.cateList = res.data
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

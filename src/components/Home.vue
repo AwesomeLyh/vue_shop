@@ -61,51 +61,51 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       menuList: [],
       iconObject: {
-        125: "iconfont icon-user",
-        103: "iconfont icon-tijikongjian",
-        101: "iconfont icon-shangpin",
-        102: "iconfont icon-danju",
-        145: "iconfont icon-baobiao",
+        125: 'iconfont icon-user',
+        103: 'iconfont icon-tijikongjian',
+        101: 'iconfont icon-shangpin',
+        102: 'iconfont icon-danju',
+        145: 'iconfont icon-baobiao'
       },
-      //是否折叠
+      // 是否折叠
       isCollapse: true,
-      //被激活的链接地址
-      activePath: "",
-    };
+      // 被激活的链接地址
+      activePath: ''
+    }
   },
-  created() {
-    this.getMenuList();
-    this.activePath = window.sessionStorage.getItem("activePath");
+  created () {
+    this.getMenuList()
+    this.activePath = window.sessionStorage.getItem('activePath')
   },
   methods: {
-    //登出
-    logout() {
-      window.sessionStorage.clear();
-      this.$router.push("/login");
+    // 登出
+    logout () {
+      window.sessionStorage.clear()
+      this.$router.push('/login')
     },
     // 获取菜单数据
-    async getMenuList() {
-      const { data: res } = await this.$http.get("menus");
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.menuList = res.data;
+    async getMenuList () {
+      const { data: res } = await this.$http.get('menus')
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.menuList = res.data
     },
-    //切换侧边宽度
-    toggleCollapse() {
-      this.isCollapse = !this.isCollapse;
+    // 切换侧边宽度
+    toggleCollapse () {
+      this.isCollapse = !this.isCollapse
     },
-    //保存要高亮的链接
-    savePath(path) {
-      window.sessionStorage.setItem("activePath", path);
-      this.activePath = path;
+    // 保存要高亮的链接
+    savePath (path) {
+      window.sessionStorage.setItem('activePath', path)
+      this.activePath = path
     },
-    handleOpen() {},
-    handleClose() {},
-  },
-};
+    handleOpen () {},
+    handleClose () {}
+  }
+}
 </script>
 
 <style lang="less" scoped>

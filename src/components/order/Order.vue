@@ -57,7 +57,7 @@
           </template>
         </el-table-column>
         <el-table-column label="操作" prop="create_date">
-          <template slot-scope="scope">
+          <template>
             <el-button
               type="mini"
               size="primary"
@@ -139,147 +139,147 @@
 </template>
 
 <script>
-import cityData from "./citydata";
+import cityData from './citydata'
 
 export default {
-  data() {
+  data () {
     return {
-      //城市数据
+      // 城市数据
       cityData,
 
-      //修改地址表单
+      // 修改地址表单
       addressForm: {},
 
-      //修改地址表单校验
+      // 修改地址表单校验
       addressFormRules: {
-        city: [{ required: true, message: "请选择城市", trigger: "blur" }],
-        location: [{ required: true, message: "请输入地址", trigger: "blur" }]
+        city: [{ required: true, message: '请选择城市', trigger: 'blur' }],
+        location: [{ required: true, message: '请输入地址', trigger: 'blur' }]
       },
 
-      //控制修改地址dialog
+      // 控制修改地址dialog
       addressVisible: false,
 
-      //控制快递查询
+      // 控制快递查询
       showProgressBoxVisible: false,
 
-      //分页查询参数
+      // 分页查询参数
       queryInfo: {
-        queryInfo: "",
+        queryInfo: '',
         pagesize: 10,
         pagenum: 1
       },
-      //数据总条数
+      // 数据总条数
       total: 0,
 
-      //订单列表
+      // 订单列表
       orderList: [],
 
-      //物流信息查询
+      // 物流信息查询
       progressInfo: []
-    };
+    }
   },
-  created() {
-    this.queryOrderList();
+  created () {
+    this.queryOrderList()
   },
   computed: {},
   methods: {
     // 控制修改地址
-    showBox() {
-      this.addressVisible = true;
+    showBox () {
+      this.addressVisible = true
     },
-    //控制快递查询
-    showProgressBox() {
+    // 控制快递查询
+    showProgressBox () {
       const data = [
         {
-          time: "2018-05-10 09:39:00",
-          ftime: "2018-05-10 09:39:00",
-          context: "已签收,感谢使用顺丰,期待再次为您服务",
-          location: ""
+          time: '2018-05-10 09:39:00',
+          ftime: '2018-05-10 09:39:00',
+          context: '已签收,感谢使用顺丰,期待再次为您服务',
+          location: ''
         },
         {
-          time: "2018-05-10 08:23:00",
-          ftime: "2018-05-10 08:23:00",
+          time: '2018-05-10 08:23:00',
+          ftime: '2018-05-10 08:23:00',
           context:
-            "[北京市]北京海淀育新小区营业点派件员 顺丰速运 95338正在为您派件",
-          location: ""
+            '[北京市]北京海淀育新小区营业点派件员 顺丰速运 95338正在为您派件',
+          location: ''
         },
         {
-          time: "2018-05-10 07:32:00",
-          ftime: "2018-05-10 07:32:00",
-          context: "快件到达 [北京海淀育新小区营业点]",
-          location: ""
+          time: '2018-05-10 07:32:00',
+          ftime: '2018-05-10 07:32:00',
+          context: '快件到达 [北京海淀育新小区营业点]',
+          location: ''
         },
         {
-          time: "2018-05-10 02:03:00",
-          ftime: "2018-05-10 02:03:00",
+          time: '2018-05-10 02:03:00',
+          ftime: '2018-05-10 02:03:00',
           context:
-            "快件在[北京顺义集散中心]已装车,准备发往 [北京海淀育新小区营业点]",
-          location: ""
+            '快件在[北京顺义集散中心]已装车,准备发往 [北京海淀育新小区营业点]',
+          location: ''
         },
         {
-          time: "2018-05-09 23:05:00",
-          ftime: "2018-05-09 23:05:00",
-          context: "快件到达 [北京顺义集散中心]",
-          location: ""
+          time: '2018-05-09 23:05:00',
+          ftime: '2018-05-09 23:05:00',
+          context: '快件到达 [北京顺义集散中心]',
+          location: ''
         },
         {
-          time: "2018-05-09 21:21:00",
-          ftime: "2018-05-09 21:21:00",
-          context: "快件在[北京宝胜营业点]已装车,准备发往 [北京顺义集散中心]",
-          location: ""
+          time: '2018-05-09 21:21:00',
+          ftime: '2018-05-09 21:21:00',
+          context: '快件在[北京宝胜营业点]已装车,准备发往 [北京顺义集散中心]',
+          location: ''
         },
         {
-          time: "2018-05-09 13:07:00",
-          ftime: "2018-05-09 13:07:00",
-          context: "顺丰速运 已收取快件",
-          location: ""
+          time: '2018-05-09 13:07:00',
+          ftime: '2018-05-09 13:07:00',
+          context: '顺丰速运 已收取快件',
+          location: ''
         },
         {
-          time: "2018-05-09 12:25:03",
-          ftime: "2018-05-09 12:25:03",
-          context: "卖家发货",
-          location: ""
+          time: '2018-05-09 12:25:03',
+          ftime: '2018-05-09 12:25:03',
+          context: '卖家发货',
+          location: ''
         },
         {
-          time: "2018-05-09 12:22:24",
-          ftime: "2018-05-09 12:22:24",
-          context: "您的订单将由HLA（北京海淀区清河中街店）门店安排发货。",
-          location: ""
+          time: '2018-05-09 12:22:24',
+          ftime: '2018-05-09 12:22:24',
+          context: '您的订单将由HLA（北京海淀区清河中街店）门店安排发货。',
+          location: ''
         },
         {
-          time: "2018-05-08 21:36:04",
-          ftime: "2018-05-08 21:36:04",
-          context: "商品已经下单",
-          location: ""
+          time: '2018-05-08 21:36:04',
+          ftime: '2018-05-08 21:36:04',
+          context: '商品已经下单',
+          location: ''
         }
-      ];
+      ]
 
-      this.progressInfo = data;
-      this.showProgressBoxVisible = true;
+      this.progressInfo = data
+      this.showProgressBoxVisible = true
     },
 
-    //页面显示条数变化
-    handleSizeChange(newSize) {
-      this.queryInfo.pagesize = newSize;
-      this.queryOrderList();
+    // 页面显示条数变化
+    handleSizeChange (newSize) {
+      this.queryInfo.pagesize = newSize
+      this.queryOrderList()
     },
-    //页面页数变化
-    handleCurrentChange(newPage) {
-      this.queryInfo.pagenum = newPage;
-      this.queryOrderList();
+    // 页面页数变化
+    handleCurrentChange (newPage) {
+      this.queryInfo.pagenum = newPage
+      this.queryOrderList()
     },
-    //查询的方法
-    async queryOrderList() {
-      const { data: res } = await this.$http.get("orders", {
+    // 查询的方法
+    async queryOrderList () {
+      const { data: res } = await this.$http.get('orders', {
         params: this.queryInfo
-      });
-      if (res.meta.status !== 200) return this.$message.error("获取订单失败");
-      this.$message.success("获取订单成功");
-      this.total = res.data.total;
-      this.orderList = res.data.goods;
+      })
+      if (res.meta.status !== 200) return this.$message.error('获取订单失败')
+      this.$message.success('获取订单成功')
+      this.total = res.data.total
+      this.orderList = res.data.goods
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

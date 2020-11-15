@@ -126,104 +126,104 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      //分配权限时选中的权限id
-      roleId: "",
-      //角色列表数据
+      // 分配权限时选中的权限id
+      roleId: '',
+      // 角色列表数据
       roleList: [],
-      //权限数据
+      // 权限数据
       rightsList: [],
-      //控制显示权限分配dialog
+      // 控制显示权限分配dialog
       setRightDialogVisable: false,
-      //树形控件的绑定数据
+      // 树形控件的绑定数据
       treeProps: {
-        label: "authName",
-        children: "children"
+        label: 'authName',
+        children: 'children'
       },
-      //默认选中的节点Id
+      // 默认选中的节点Id
       defKeys: [104]
-    };
+    }
   },
-  created() {
-    this.getRoleList();
+  created () {
+    this.getRoleList()
   },
   methods: {
-    //确认发起请求修改角色权限
-    async allotRights() {
+    // 确认发起请求修改角色权限
+    async allotRights () {
       const keys = [
         ...this.$refs.treeRef.getCheckedKeys(),
         ...this.$refs.treeRef.getHalfCheckedKeys()
-      ];
-      const idStr = keys.join(",");
+      ]
+      const idStr = keys.join(',')
       const { data: res } = await this.$http.post(
         `roles/${this.roleId}/rights`,
         { rids: idStr }
-      );
-      if (res.meta.status !== 200) return this.$message.error("修改权限失败");
-      this.$message.success("修改成功");
-      this.getRoleList();
-      this.setRightDialogVisable = false;
+      )
+      if (res.meta.status !== 200) return this.$message.error('修改权限失败')
+      this.$message.success('修改成功')
+      this.getRoleList()
+      this.setRightDialogVisable = false
     },
-    //关闭权限dialog时清空默认选中值
-    setCloseRightDialog() {
-      this.defKeys = [];
+    // 关闭权限dialog时清空默认选中值
+    setCloseRightDialog () {
+      this.defKeys = []
     },
-    //递归所有三级权限id
-    getLeafKeys(node, arr) {
-      //定义出口 不存在child则时三级权限
+    // 递归所有三级权限id
+    getLeafKeys (node, arr) {
+      // 定义出口 不存在child则时三级权限
       if (!node.children) {
-        return arr.push(node.id);
+        return arr.push(node.id)
       }
-      node.children.forEach(item => this.getLeafKeys(item, arr));
+      node.children.forEach(item => this.getLeafKeys(item, arr))
     },
-    //展示分配权限
-    async showSetRightDialog(role) {
-      //获取当前行的角色id
-      this.roleId = role.id;
+    // 展示分配权限
+    async showSetRightDialog (role) {
+      // 获取当前行的角色id
+      this.roleId = role.id
 
-      //获取数据
-      const { data: res } = await this.$http.get("rights/tree");
-      if (res.meta.status !== 200) return this.$message.error("获取权限失败");
-      this.rightsList = res.data;
-      this.$message.success("获取权限数据成功");
-      //获取三级权限id
-      this.getLeafKeys(role, this.defKeys);
-      //显示dialog
-      this.setRightDialogVisable = true;
+      // 获取数据
+      const { data: res } = await this.$http.get('rights/tree')
+      if (res.meta.status !== 200) return this.$message.error('获取权限失败')
+      this.rightsList = res.data
+      this.$message.success('获取权限数据成功')
+      // 获取三级权限id
+      this.getLeafKeys(role, this.defKeys)
+      // 显示dialog
+      this.setRightDialogVisable = true
     },
-    //编辑权限
-    async editRoles(id) {
+    // 编辑权限
+    async editRoles (id) {
       // const { data: res } = await this.$http.post(
       //   `roles/${id}/rights`
       // )
     },
-    //获取角色的方法
-    async getRoleList() {
-      const { data: res } = await this.$http.get("roles");
-      if (res.meta.status !== 200) return this.$message.error("获取角色失败");
-      this.roleList = res.data;
-      console.log(res);
-      this.$message.success("获取角色成功");
+    // 获取角色的方法
+    async getRoleList () {
+      const { data: res } = await this.$http.get('roles')
+      if (res.meta.status !== 200) return this.$message.error('获取角色失败')
+      this.roleList = res.data
+      console.log(res)
+      this.$message.success('获取角色成功')
     },
-    //删除角色权限的方法
-    async removeRightById(role, rightId) {
+    // 删除角色权限的方法
+    async removeRightById (role, rightId) {
       const confirmResult = await this.$confirm(
-        "此操作将永久删除该文件, 是否继续?",
-        "提示",
-        { confirmButtonText: "确定", cancelButtonText: "取消", type: "warning" }
-      ).catch(err => err);
-      if (confirmResult !== "confirm") {
-        return this.$message.info("已取消删除");
+        '此操作将永久删除该文件, 是否继续?',
+        '提示',
+        { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      ).catch(err => err)
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('已取消删除')
       }
       const { data: res } = await this.$http.delete(
         `roles/${role.id}/rights/${rightId}`
-      );
-      if (res.meta.status !== 200) return this.$message.error("删除权限失败");
-      this.getRoleList();
+      )
+      if (res.meta.status !== 200) return this.$message.error('删除权限失败')
+      this.getRoleList()
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

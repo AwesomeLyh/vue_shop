@@ -45,45 +45,44 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       // 这是登录表单的数据绑定对象
       loginForm: {
-        username: "admin",
-        password: "123456",
+        username: 'admin',
+        password: '123456'
       },
-      //登录表单数据的验证
+      // 登录表单数据的验证
       loginFormRules: {
         username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 10, message: "长度在3到10位", trigger: "blur" },
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 3, max: 10, message: '长度在3到10位', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 6, max: 15, message: "长度在6到15位", trigger: "blur" },
-        ],
-      },
-    };
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, max: 15, message: '长度在6到15位', trigger: 'blur' }
+        ]
+      }
+    }
   },
   methods: {
-    //重置表单数据
-    resetLoginForm() {
-      this.$refs.loginFormRef.resetFields();
+    // 重置表单数据
+    resetLoginForm () {
+      this.$refs.loginFormRef.resetFields()
     },
-    login() {
+    login () {
       this.$refs.loginFormRef.validate(async (val) => {
-        if (!val) return this.$message.error("用户名或密码不合法");
-        const { data: result } = await this.$http.post("login", this.loginForm);
-        if (result.meta.status !== 200)
-          return this.$message.error("login failed");
-        this.$message.success("login success");
-        //登录成功保存Token
-        window.sessionStorage.setItem("token", result.data.token);
-        this.$router.push("/home");
-      });
-    },
-  },
-};
+        if (!val) return this.$message.error('用户名或密码不合法')
+        const { data: result } = await this.$http.post('login', this.loginForm)
+        if (result.meta.status !== 200) { return this.$message.error('login failed') }
+        this.$message.success('login success')
+        // 登录成功保存Token
+        window.sessionStorage.setItem('token', result.data.token)
+        this.$router.push('/home')
+      })
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

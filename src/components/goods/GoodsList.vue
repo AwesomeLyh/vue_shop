@@ -81,75 +81,74 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      //商品总条数
+      // 商品总条数
       total: 0,
 
-      //商品数据
+      // 商品数据
       goodsList: [],
 
-      //分页查询参数
+      // 分页查询参数
       queryInfo: {
-        query: "",
+        query: '',
         pagenum: 1,
         pagesize: 10
       }
-    };
+    }
   },
-  created() {
-    this.getGoodsList();
+  created () {
+    this.getGoodsList()
   },
   methods: {
-    //跳转到新增页面
-    goAddGoodPage() {
-      this.$router.push("goods/add");
+    // 跳转到新增页面
+    goAddGoodPage () {
+      this.$router.push('goods/add')
     },
 
-    //删除
-    async removeGoodByid(id) {
+    // 删除
+    async removeGoodByid (id) {
       const confirmResult = await this.$confirm(
-        "此操作将永久删除该文件, 是否继续?",
-        "提示",
-        { confirmButtonText: "确定", cancelButtonText: "取消", type: "warning" }
-      ).catch(err => err);
-      console.log(id);
-      if (confirmResult !== "confirm") return this.$message.info("删除取消");
-      const { data: res } = await this.$http.delete(`goods/${id}`);
-      if (res.meta.status !== 200) return this.$message.error("删除商品失败");
-      this.$message.success("删除商品成功");
-      this.getGoodsList();
+        '此操作将永久删除该文件, 是否继续?',
+        '提示',
+        { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      ).catch(err => err)
+      console.log(id)
+      if (confirmResult !== 'confirm') return this.$message.info('删除取消')
+      const { data: res } = await this.$http.delete(`goods/${id}`)
+      if (res.meta.status !== 200) return this.$message.error('删除商品失败')
+      this.$message.success('删除商品成功')
+      this.getGoodsList()
     },
-    //页面条数变化
-    handleSizeChange(newSize) {
-      this.queryInfo.pagesize = newSize;
-      this.getGoodsList();
+    // 页面条数变化
+    handleSizeChange (newSize) {
+      this.queryInfo.pagesize = newSize
+      this.getGoodsList()
     },
-    //页数变化
-    handleCurrentChange(newPage) {
-      this.queryInfo.pagenum = newPage;
-      this.getGoodsList();
+    // 页数变化
+    handleCurrentChange (newPage) {
+      this.queryInfo.pagenum = newPage
+      this.getGoodsList()
     },
 
-    //获取商品数据
-    async getGoodsList() {
-      const { data: res } = await this.$http.get("goods", {
+    // 获取商品数据
+    async getGoodsList () {
+      const { data: res } = await this.$http.get('goods', {
         params: this.queryInfo
-      });
-      if (res.meta.status !== 200)
-        return this.$message.error("获取商品数据失败");
-      this.$message.success("获取商品成功");
-      this.goodsList = res.data.goods;
-      this.total = res.data.total;
-      console.log(res.data);
+      })
+      if (res.meta.status !== 200) { return this.$message.error('获取商品数据失败') }
+      this.$message.success('获取商品成功')
+      this.goodsList = res.data.goods
+      this.total = res.data.total
+      console.log(res.data)
     },
 
-    //添加商品dialog关闭
-    addDialogClosed() {
-      this.addDialogVisible = false;
+    // 添加商品dialog关闭
+    addDialogClosed () {
+      this.addDialogVisible = false
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped></style>
