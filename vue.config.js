@@ -6,7 +6,6 @@ module.exports = {
         .entry('app')
         .clear()
         .add('./src/main-prod.js')
-
       config.set('externals', {
         vue: 'Vue',
         'vue-router': 'VueRouter',
@@ -16,6 +15,10 @@ module.exports = {
         nprogress: 'NProgress',
         'vue-quill-editor': 'VueQuillEditor'
       })
+      config.plugin('html').tap(args => {
+        args[0].isProd = true
+        return args
+      })
     })
 
     // 研发模式
@@ -24,6 +27,10 @@ module.exports = {
         .entry('app')
         .clear()
         .add('./src/main-dev.js')
+      config.plugin('html').tap(args => {
+        args[0].isProd = false
+        return args
+      })
     })
   }
 }
