@@ -2,7 +2,6 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 // 引入element注册的组件
-import './plugins/element.js'
 
 // 导入全局样式表
 import './assets/css/global.css'
@@ -18,15 +17,9 @@ import TreeTable from 'vue-table-with-tree-grid'
 
 // 引入进度条组件
 import Nprogress from 'nprogress'
-import 'nprogress/nprogress.css'
 
 // 引入富文本编辑器组件
 import VueQuillEditor from 'vue-quill-editor'
-
-// 引入富文本编辑器的样式
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
 
 // 注册组件
 Vue.component('tree-table', TreeTable)
