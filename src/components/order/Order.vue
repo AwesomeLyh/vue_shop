@@ -57,12 +57,12 @@
           </template>
         </el-table-column>
         <el-table-column label="操作" prop="create_date">
-          <template>
+          <template slot-scope="scope">
             <el-button
               type="mini"
               size="primary"
               icon="el-icon-edit"
-              @click="showBox"
+              @click="showBox(scope.row.attr_id)"
             ></el-button>
             <el-button
               type="mini"
@@ -184,7 +184,7 @@ export default {
   computed: {},
   methods: {
     // 控制修改地址
-    showBox () {
+    showBox (id) {
       this.addressVisible = true
     },
     // 控制快递查询
